@@ -10,9 +10,6 @@ MongoClient.connect('mongodb+srv://root:ASDun0304@cluster0.eatnaco.mongodb.net/?
     if(err){ return console.log(err);}
 
     db = client.db('todoapp');
-    db.collection('post').insertOne({이름: 'john', 나이: 20}, (err, result)=>{
-        console.log('저장완료');
-    });
     app.listen(8080, function(){
         console.log('listening on 8080');
     });
@@ -26,6 +23,9 @@ app.get('/', (요청, 응답) => {
 })
 app.post('/add', function(요청, 응답){
     응답.send('전송완료');
+    db.collection('counter').findOne({name: '게시물갯수'}, function(err, result){
+
+    });
     db.collection('post').insertOne({제목 : 요청.body.title, 날짜 : 요청.body.date}, (err, result) =>{
         console.log('저장완료');
     })
