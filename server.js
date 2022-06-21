@@ -21,14 +21,18 @@ MongoClient.connect('mongodb+srv://root:ASDun0304@cluster0.eatnaco.mongodb.net/?
 app.get('/', (요청, 응답) => {
     응답.sendFile(__dirname + '/index.html')
 })
+app.get('/write', (요청, 응답) => {
+    응답.sendFile(__dirname + '/write.html')
+})
 app.post('/add', function(요청, 응답){
     응답.send('전송완료');
     db.collection('counter').findOne({name: '게시물갯수'}, function(err, result){
-
+        var 총게시물갯수 = result.totalPost;
+        db.collection('post').insertOne({ _id: 총게시물갯수 + 1,제목 : 요청.body.title, 날짜 : 요청.body.date}, (err, result) =>{
+            console.log('저장완료');
+        });
     });
-    db.collection('post').insertOne({제목 : 요청.body.title, 날짜 : 요청.body.date}, (err, result) =>{
-        console.log('저장완료');
-    })
+    
 })
 app.get('/list', function(요청, 응답){
     
